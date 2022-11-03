@@ -340,6 +340,8 @@ namespace System.Windows.Forms
 
             public Control Owner { get; }
 
+            internal virtual Control OwnerInternal => Owner;
+
             // Look for a label immediately preceeding this control in
             // the tab order, and use its name for the accessible name.
             //

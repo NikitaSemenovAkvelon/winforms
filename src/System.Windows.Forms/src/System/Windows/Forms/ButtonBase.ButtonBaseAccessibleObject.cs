@@ -8,26 +8,25 @@ namespace System.Windows.Forms
     {
         public class ButtonBaseAccessibleObject : ControlAccessibleObject
         {
-            private readonly ButtonBase _owningButtonBase;
-
             public ButtonBaseAccessibleObject(Control owner)
                 : base((owner is ButtonBase owningButtonBase) ? owner : throw new ArgumentException(string.Format(SR.ConstructorArgumentInvalidValueType, nameof(Owner), typeof(ButtonBase))))
             {
-                _owningButtonBase = owningButtonBase;
             }
 
             public override AccessibleStates State
-                => _owningButtonBase.IsHandleCreated && _owningButtonBase.OwnerDraw && _owningButtonBase.MouseIsDown
+                => OwnerInternal.IsHandleCreated && OwnerInternal.OwnerDraw && OwnerInternal.MouseIsDown
                     ? base.State | AccessibleStates.Pressed
                     : base.State;
 
             public override void DoDefaultAction()
             {
-                if (_owningButtonBase.IsHandleCreated)
+                if (OwnerInternal.IsHandleCreated)
                 {
-                    _owningButtonBase.OnClick(EventArgs.Empty);
+                    OwnerInternal.OnClick(EventArgs.Empty);
                 }
             }
+
+            internal override ButtonBase OwnerInternal => (ButtonBase)Owner;
         }
     }
 }
